@@ -49,14 +49,16 @@ class Game(db.Model):
     player_id = db.Column(db.Integer, ForeignKey('player.id'), nullable=False)
     positions = db.Column(db.Integer, nullable=False, default=6)
     colors = db.Column(db.Integer, nullable=False, default=6)
+    double_colors = db.Column(db.Boolean, nullable=False, default=False)
     winner = db.Column(db.Boolean, nullable=True)
     code = db.Column(db.String(20), nullable=True)
     ingame_colors = db.Column(db.String(40), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    def __init__(self, player_id, positions, colors, code, ingame_colors):
+    def __init__(self, player_id, positions, double_colors, colors, code, ingame_colors):
         self.player_id = player_id
         self.positions = positions
+        self.double_colors = double_colors
         self.colors = colors
         self.code = code
         self.ingame_colors = ingame_colors

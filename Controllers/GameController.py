@@ -21,11 +21,18 @@ class GameController:
             username = request.form['username']
             positions = request.form['positions']
             colors = request.form['colors']
+            double_colors = request.form.get('double_colors')
 
             if int(positions) > int(colors):
                 positions = colors
 
+            if int(positions) > int(colors) and not double_colors:
+                positions = colors
+
             game_pins = self.get_pins('', int(colors))
+
+            if double_colors:
+                double_colors = 1
 
             try:
                 player = Player.query.filter_by(username=username).one()
@@ -36,7 +43,10 @@ class GameController:
                 db.session.add(player)
                 db.session.commit()
 
-            code_tuple = random.sample(game_pins, int(positions))
+            if double_colors:
+                code_tuple = random.choices(game_pins, k=int(positions))
+            else:
+                code_tuple = random.sample(game_pins, int(positions))
 
             code_ids = []
             for pin in code_tuple:
@@ -49,7 +59,7 @@ class GameController:
             code = ' '.join(code_ids)
             pins = ' '.join(pin_ids)
 
-            game = Game(player.id, positions, colors, code, pins)
+            game = Game(player.id, positions, double_colors, colors, code, pins)
 
             db.session.add(game)
             db.session.commit()
