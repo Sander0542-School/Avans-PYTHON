@@ -6,39 +6,32 @@
             <form method="POST" action="{{ url_for('new') }}">
                 <div class="form-group">
                     <label for="inputUsername">Username</label>
-                    <input name="username" type="text" class="form-control" id="inputUsername">
+                    <input required name="username" type="text" class="form-control" id="inputUsername">
                 </div>
 
                 <div class="form-group">
                     <label for="inputPositions">Positions</label>
-                    <select name="positions" id="inputPositions" class="form-control">
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
+                    <select required name="positions" id="inputPositions" class="form-control">
+                        {% for i in range(4,11) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="inputColors">Colors</label>
-                    <select name="colors" id="inputColors" class="form-control">
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
+                    <select required name="colors" id="inputColors" class="form-control">
+                        {% for i in range(6,11) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
-                <div class="row">
-                    <div class="col p-2">
-                        <label for="double_colors">Do you want to play with double colors?</label>
-                        <label class="switch">
-                            <input type="checkbox" name="double_colors">
-                            <span class="slider round"></span>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" name="double_colors" type="checkbox" id="inputDoubleColors">
+                        <label class="form-check-label" for="inputDoubleColors">
+                            Double Colors
                         </label>
                     </div>
                 </div>

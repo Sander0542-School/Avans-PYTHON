@@ -19,21 +19,15 @@ class GameController:
         if request.method == 'GET':
             return render_template('game/new.html')
         elif request.method == 'POST':
-            username = request.form['username']
-            positions = request.form['positions']
-            colors = request.form['colors']
-            double_colors = request.form.get('double_colors')
-
-            if int(positions) > int(colors):
-                positions = colors
+            username = request.form.get('username')
+            positions = request.form.get('positions')
+            colors = request.form.get('colors')
+            double_colors = False if request.form.get('double_colors') is None else True
 
             if int(positions) > int(colors) and not double_colors:
                 positions = colors
 
             game_pins = self.get_pins('', int(colors))
-
-            if double_colors:
-                double_colors = 1
 
             try:
                 player = Player.query.filter_by(username=username).one()
@@ -67,7 +61,7 @@ class GameController:
 
     def play_action(self):
         game_id = request.args.get('game_id')
-        cheat_mode = False if request.args.get('cheat_mode') == None else True
+        cheat_mode = False if request.args.get('cheat_mode') is None else True
 
         game = Game.query.get(game_id)
 
@@ -106,8 +100,6 @@ class GameController:
                 db.session.add(game_pin)
 
             db.session.commit()
-
-            pprint(current_turn)
 
             if self.pins_match(pins, code_pins):
                 game.winner = True
