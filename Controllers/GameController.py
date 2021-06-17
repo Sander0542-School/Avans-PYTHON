@@ -1,3 +1,5 @@
+import logging
+
 from flask import request, render_template, redirect, url_for
 
 from database import Player, db, Game, Pin
@@ -23,18 +25,36 @@ class GameController:
             if int(positions) > int(colors):
                 positions = colors
 
-            ingame_pins = self.get_pins('', int(colors))
+            game_pins = self.get_pins('', int(colors))
 
-            player = Player(username)
-            db.session.add(player)
-            db.session.commit()
+            try:
+                player = Player.query.filter_by(username=username).one()
+
+                logging.info(player)
+            except:
+                player = Player(username)
+                db.session.add(player)
+                db.session.commit()
+
+            code_tuple = random.sample(game_pins, int(positions))
+
+            code_ids = []
+            for pin in code_tuple:
+                code_ids.append(str(pin.id))
+
+            pin_ids = []
+            for pin in game_pins:
+                pin_ids.append(str(pin.id))
+
+            code = ' '.join(code_ids)
+            pins = ' '.join(pin_ids)
 
             game = Game(player.id, positions, colors, code, pins)
 
             db.session.add(game)
             db.session.commit()
 
-            return redirect(url_for('play', player_id=player.id, game_id=game.id))
+            return redirect(url_for('play', game_id=game.id))
 
     def play_action(self):
         return
@@ -52,7 +72,6 @@ class GameController:
             return pins
         else:
             all_pins = []
-
             for pin in db.session.query(Pin).all():
                 all_pins.append(pin)
             return random.sample(all_pins, int(colors))

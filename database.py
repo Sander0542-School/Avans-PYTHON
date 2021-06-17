@@ -1,3 +1,4 @@
+from sqlalchemy import ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -28,8 +29,8 @@ class DatabaseInit:
                 'purple',
             ]
 
-            for pin in pins:
-                self.db.session.add(Pin(color=pin))
+            for color in pins:
+                self.db.session.add(Pin(color))
 
             self.db.session.commit()
 
@@ -45,7 +46,7 @@ game_pin = db.Table('game_pin',
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player_id = db.Column(db.Integer, nullable=False)
+    player_id = db.Column(db.Integer, ForeignKey('player.id'), nullable=False)
     positions = db.Column(db.Integer, nullable=False, default=6)
     colors = db.Column(db.Integer, nullable=False, default=6)
     winner = db.Column(db.Boolean, nullable=True)

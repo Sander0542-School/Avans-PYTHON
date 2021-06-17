@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Avans-Mastermind" type="Python.FlaskServer" activateToolWindowBeforeRun="false">
     <option name="additionalOptions" value="--host=0.0.0.0" />
+    <option name="flaskDebug" value="true" />
     <option name="flaskEnv" />
     <module name="Avans-Mastermind" />
     <option name="target" value="$PROJECT_DIR$/app.py" />
