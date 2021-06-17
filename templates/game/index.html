@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <a href="{{ url_for('new') }}" class="btn btn-primary">New game</a>
+    <a href="{{ url_for('statistics') }}" class="btn btn-primary">Statistics</a>
+
+{% endblock %}

@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: #212529;
+    color: #cccccc;
+}
+
+main {
+    min-height: calc(100vh - 50px);
+}
+
+footer {
+    height: 50px;
+    line-height: 50px;
+    background-color: #e3e3e3;
+}
+
+.mt-20vh {
+    margin-top: 20vh;
+}
+
+.my-10px {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.pins-picker {
+    position: sticky;
+    top: 20vh;
+    left: 0;
+    border-radius: 0 5px 5px 0;
+    background-color: #1b1e26;
+    padding: 10px 0;
+    box-shadow: 4px 5px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.pins-picker .pin {
+    border: 1px solid #202020;
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+    border-radius: 50%;
+    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.pins-picker .pin:first-child {
+    margin-top: 0;
+}
+
+.pins-picker .pin:last-child {
+    margin-bottom: 0;
+}
+
+.board {
+    margin-bottom: 50px;
+    box-shadow: 4px 5px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+    background-color: #252525;
+}
+
+.field {
+    background-color: #202020;
+}
+
+.field > .row:first-child, .sidebar > .row:first-child {
+    border-bottom: 1px solid #202020;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .5)
+}
+
+.pin-hole {
+    margin: 20px 0;
+    border: 5px solid #000;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.answer-row {
+    height: 45px;
+    justify-content: center;
+    align-content: center;
+}
+
+.answer-row:nth-child(odd) .col {
+    align-items: flex-end;
+}
+
+.answer-row .col {
+    height: 100%;
+}
+
+.answer-row .col .answer-pin.disabled {
+    background-color: #ff1104;
+    border-color: #ffffff;
+}
+
+.answer-pin {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    margin: 2px;
+}
+
+button {
+    position: sticky;
+    top: 20vh;
+}
+
+.modal-content {
+    color: white;
+    background-color: #303543;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 25px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
