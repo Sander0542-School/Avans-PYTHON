@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Game {{ game.id }}{% endblock %}
+{% block content %}
+
+    <h4>Player: {{ game.player.username }}</h4>
+    {% if current_turn < 10 %}
+        <h4>Turn: {{ current_turn + 1 }}</h4>
+    {% endif %}
+    <h4>State: {{ 'Playing' if game.winner == None else ('Won' if game.winner else 'Lost') }}</h4>
+    <table>
+        <tr>
+            <th>Turn</th>
+            {% for turn in range(0,game.positions) %}
+                <th></th>
+            {% endfor %}
+            <th></th>
+        </tr>
+        {% for turn in range(0,10 if game.winner == None else current_turn) %}
+            <tr>
+                <form method="post">
+                    <td>{{ turn + 1 }}</td>
+                    {% for position in range(0,game.positions) %}
+                        <td>
+                            {% if current_turn == turn %}
+                                <select required name="pins[{{ position }}]">
+                                    <option disabled selected value="">choose</option>
+                                    {% for pin in game_pins %}
+                                        <option value="{{ pin.id }}">{{ pin.color }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                {% if turn in placed_pins %}
+                                    {{ placed_pins[turn][position].pin.color }}
+                                {% else %}
+                                    empty
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td>
+                        {% if current_turn > turn %}
+
+                        {% elif current_turn == turn %}
+                            <button type="submit">Check</button>
+                        {% endif %}
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+        {% if game.winner != None or cheat_mode %}
+            <tr>
+                <td>X</td>
+                {% for pin in code_pins %}
+                    <td>{{ pin.color }}</td>
+                {% endfor %}
+                <td></td>
+            </tr>
+        {% endif %}
+    </table>
+
+{% endblock %}
