@@ -8,4 +8,4 @@ class HomeController:
         self.db = db
 
     def index_action(self):
-        return render_template('game/index.html')
+        return render_template('home/index.html')
