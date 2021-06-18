@@ -13,8 +13,8 @@
 
             <p class="card-text">Top 5 spelers met de meeste wins</p>
             <ul>
-                {% for win in top_five_fastest_wins %}
-                    <li>{{ win }}</li>
+                {% for player, win in top_five_fastest_wins %}
+                    <li>{{player.username,  win }}</li>
                 {% endfor %}
             </ul>
         </div>

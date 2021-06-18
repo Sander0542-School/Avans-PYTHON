@@ -16,16 +16,16 @@ class DatabaseInit:
             self.db.create_all()
 
             pins = [
-                'red',
+                'purple',
                 'blue',
                 'green',
                 'yellow',
-                'white',
-                'black',
                 'orange',
+                'red',
+                'black',
                 'brown',
-                'magenta',
-                'purple',
+                'lightblue',
+                'pink',
             ]
 
             for color in pins:
