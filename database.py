@@ -1,4 +1,3 @@
-from sqlalchemy import ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -35,18 +34,22 @@ class DatabaseInit:
             self.db.session.commit()
 
 
-game_pin = db.Table('game_pin',
-                    db.Column('id', db.Integer, primary_key=True, autoincrement=True),
-                    db.Column('game_id', db.Integer, db.ForeignKey('game.id')),
-                    db.Column('pin_id', db.Integer, db.ForeignKey('pin.id')),
-                    db.Column('turn', db.Integer, nullable=False),
-                    db.Column('correct', db.String, nullable=False)
-                    )
+class GamePin(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), nullable=False)
+    pin_id = db.Column(db.Integer, db.ForeignKey('pin.id'), nullable=False)
+    turn = db.Column(db.Integer, nullable=False)
+    pin = db.relationship('Pin')
+
+    def __init__(self, game_id, pin_id, turn):
+        self.game_id = game_id
+        self.pin_id = pin_id
+        self.turn = turn
 
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player_id = db.Column(db.Integer, ForeignKey('player.id'), nullable=False)
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'), nullable=False)
     positions = db.Column(db.Integer, nullable=False, default=6)
     colors = db.Column(db.Integer, nullable=False, default=6)
     double_colors = db.Column(db.Boolean, nullable=False, default=False)
@@ -54,6 +57,8 @@ class Game(db.Model):
     code = db.Column(db.String(20), nullable=True)
     ingame_colors = db.Column(db.String(40), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    pins = db.relationship('GamePin')
+    player = db.relationship('Player')
 
     def __init__(self, player_id, positions, double_colors, colors, code, ingame_colors):
         self.player_id = player_id
@@ -67,7 +72,6 @@ class Game(db.Model):
 class Pin(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     color = db.Column(db.String, nullable=False)
-    games = db.relationship('Game', secondary=game_pin, backref=db.backref('board_pins', lazy='dynamic'))
 
     def __init__(self, color):
         self.color = color
@@ -76,7 +80,6 @@ class Pin(db.Model):
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String, nullable=False)
-    games = db.relationship('Game')
 
     def __init__(self, name):
         self.username = name
