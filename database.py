@@ -9,10 +9,7 @@ class DatabaseInit:
         self.db = db
 
     def create_database(self):
-        try:
-            open('game.db')
-
-        except IOError:
+        if not db.engine.dialect.has_table(db.engine.connect(), 'game'):
             self.db.create_all()
 
             pins = [
@@ -40,6 +37,7 @@ class GamePin(db.Model):
     pin_id = db.Column(db.Integer, db.ForeignKey('pin.id'), nullable=False)
     turn = db.Column(db.Integer, nullable=False)
     pin = db.relationship('Pin')
+    game = db.relationship('Game')
 
     def __init__(self, game_id, pin_id, turn):
         self.game_id = game_id
@@ -54,7 +52,7 @@ class Game(db.Model):
     colors = db.Column(db.Integer, nullable=False, default=6)
     double_colors = db.Column(db.Boolean, nullable=False, default=False)
     winner = db.Column(db.Boolean, nullable=True)
-    code = db.Column(db.String(20), nullable=True)
+    code = db.Column(db.String(40), nullable=True)
     ingame_colors = db.Column(db.String(40), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     pins = db.relationship('GamePin')
@@ -71,7 +69,7 @@ class Game(db.Model):
 
 class Pin(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    color = db.Column(db.String, nullable=False)
+    color = db.Column(db.String(40), nullable=False, unique=True)
 
     def __init__(self, color):
         self.color = color
@@ -79,7 +77,7 @@ class Pin(db.Model):
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String, nullable=False)
+    username = db.Column(db.String(255), nullable=False, unique=True)
 
     def __init__(self, name):
         self.username = name

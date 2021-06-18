@@ -1,9 +1,6 @@
-from flask import request, render_template, redirect, url_for
-import sqlite3 as sqlite
+from flask import render_template
 
-from sqlalchemy import func
-
-from database import Player, db, Game, Pin
+from database import db, Game
 
 
 class StatisticController:
@@ -11,10 +8,19 @@ class StatisticController:
         self.db = db
 
     def index_action(self):
-        number_of_games_won = Game.query.filter_by(winner=True).count()
-        top_five_wins = Game.query.filter_by(winner=True).group_by(Game.player_id).limit(5).all()
-        top_five_fastest_wins = db.session.query(Game, func.count(Game.player_id)).join(Game.pins).group_by(Game.player_id).all()
+        with db.engine.connect() as conn:
+            games_won = Game.query.filter_by(winner=True).count()
+            games_lost = Game.query.filter_by(winner=False).count()
+            games_playing = Game.query.filter_by(winner=None).count()
 
-        return render_template('statistics/index.html', number_of_games_won=number_of_games_won,
-                               top_five_wins=top_five_wins,
-                               top_five_fastest_wins=top_five_fastest_wins)
+            top_five_players = conn.execute('SELECT player.username, COUNT(game.id) as wins FROM player INNER JOIN game on player.id = game.player_id WHERE game.winner is true GROUP BY game.player_id ORDER BY wins DESC LIMIT 5;')
+            top_five_most_games = conn.execute('SELECT player.username, COUNT(game.id) as games FROM player INNER JOIN game on player.id = game.player_id GROUP BY game.player_id ORDER BY games DESC LIMIT 5;')
+            top_five_fastest_wins = conn.execute('SELECT player.username, MAX(game_pin.turn) + 1 as turns FROM game INNER JOIN game_pin ON game.id = game_pin.game_id INNER JOIN player ON game.player_id = player.id WHERE game.winner is true GROUP BY game.id ORDER BY turns LIMIT 5;');
+
+            return render_template('statistics/index.html', games_won=games_won,
+                                   games_lost=games_lost,
+                                   games_playing=games_playing,
+                                   top_five_players=top_five_players,
+                                   top_five_most_games=top_five_most_games,
+                                   top_five_fastest_wins=top_five_fastest_wins
+                                   )

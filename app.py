@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # Config
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://avans_python:kQNEYAeB2dLP3Cnn@10.10.11.20:3306/avans_python'
 
 # Database
 db.init_app(app)

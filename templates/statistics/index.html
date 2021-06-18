@@ -1,22 +1,82 @@
 {% extends "layout.html" %}
 {% block title %}Statistics{% endblock %}
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">Aantal gewonnen games: {{ number_of_games_won }}</p>
-            <p class="card-text">Top 5 spelers met de meeste wins</p>
-            <ul>
-                {% for win in top_five_wins %}
-                    <li>{{ win.player.username }}</li>
-                {% endfor %}
-            </ul>
-
-            <p class="card-text">Top 5 spelers met de meeste wins</p>
-            <ul>
-                {% for game, win in top_five_fastest_wins %}
-                    <li>{{game.player.username,  win }}</li>
-                {% endfor %}
-            </ul>
+    <div class="card-columns">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Global Stats</h5>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <th>Games Won</th>
+                        <td>{{ games_won }}</td>
+                    </tr>
+                    <tr>
+                        <th>Games Lost</th>
+                        <td>{{ games_lost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Games Playing</th>
+                        <td>{{ games_playing }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 5 Players</h5>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <th>Place</th>
+                        <th>Player</th>
+                        <th>Wins</th>
+                    </tr>
+                    {% for index, player in enumerate(top_five_players) %}
+                        <tr>
+                            <th>{{ index + 1 }}.</th>
+                            <td>{{ player.username }}</td>
+                            <td>{{ player.wins }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 5 Most Games</h5>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <th>Place</th>
+                        <th>Player</th>
+                        <th>Games</th>
+                    </tr>
+                    {% for index, player in enumerate(top_five_most_games) %}
+                        <tr>
+                            <th>{{ index + 1 }}.</th>
+                            <td>{{ player.username }}</td>
+                            <td>{{ player.games }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Top 5 Fastest Wins</h5>
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <th>Place</th>
+                        <th>Player</th>
+                        <th>Turns</th>
+                    </tr>
+                    {% for index, game in enumerate(top_five_fastest_wins) %}
+                        <tr>
+                            <th>{{ index + 1 }}.</th>
+                            <td>{{ game.username }}</td>
+                            <td>{{ game.turns }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
