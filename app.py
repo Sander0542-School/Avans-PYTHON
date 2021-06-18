@@ -41,6 +41,10 @@ def statistics():
 with app.app_context():
     database_init.create_database()
 
+@app.context_processor
+def inject_enumerate():
+    return dict(enumerate=enumerate)
+
 # Startup
 if __name__ == '__main__':
     app.run()

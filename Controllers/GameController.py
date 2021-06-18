@@ -85,10 +85,12 @@ class GameController:
                 turn_stats.setdefault(turn, [])
 
                 for position, code_pin in enumerate(code_pins):
-                    if code_pin.color == pins[0].pin.color:
+                    if code_pin.color == pins[position].pin.color:
                         turn_stats[turn].append('black')
                     elif self.color_in_pins(pins, code_pin.color):
                         turn_stats[turn].append('white')
+
+                turn_stats[turn].sort()
 
             return render_template('game/play.html', game=game, current_turn=current_turn, placed_pins=placed_pins,
                                    game_pins=game_pins, code_pins=code_pins, turn_stats=turn_stats,cheat_mode=cheat_mode)

@@ -7,13 +7,15 @@
         <h4>Turn: {{ current_turn + 1 }}</h4>
     {% endif %}
     <h4>State: {{ 'Playing' if game.winner == None else ('Won' if game.winner else 'Lost') }}</h4>
-    <table>
+    <br/>
+    <table class="table table-bordered table-sm table-fit">
         <tr>
             <th>Turn</th>
-            {% for turn in range(0,game.positions) %}
-                <th></th>
+            {% for position in range(0,game.positions) %}
+                <th>Pos {{ position + 1 }}</th>
             {% endfor %}
             <th></th>
+            <th>Hint</th>
         </tr>
         {% for turn in range(0,10 if game.winner == None else current_turn) %}
             <tr>
@@ -22,26 +24,30 @@
                     {% for position in range(0,game.positions) %}
                         <td>
                             {% if current_turn == turn %}
-                                <select required name="pins[{{ position }}]">
-                                    <option disabled selected value="">choose</option>
-                                    {% for pin in game_pins %}
-                                        <option value="{{ pin.id }}">{{ pin.color }}</option>
+                                <select style="color:{{ game_pins[0].color }}" required name="pins[{{ position }}]" onchange="colorChanged(this)">
+                                    {% for index, pin in enumerate(game_pins) %}
+                                        <option {{ 'selected' if index == 0 else '' }} data-color="{{ pin.color }}" value="{{ pin.id }}"style="color:{{ pin.color }};">&#11044;</option>
                                     {% endfor %}
                                 </select>
                             {% else %}
                                 {% if turn in placed_pins %}
-                                    {{ placed_pins[turn][position].pin.color }}
+                                    <span class="mm-pin" style="color:{{ placed_pins[turn][position].pin.color }};">&#11044;</span>
                                 {% else %}
-                                    empty
+                                    <span class="mm-pin" style="color:transparent">&#11044;</span>
                                 {% endif %}
                             {% endif %}
                         </td>
                     {% endfor %}
                     <td>
-                        {% if current_turn > turn %}
-
-                        {% elif current_turn == turn %}
+                        {% if current_turn == turn %}
                             <button type="submit">Check</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if turn < current_turn %}
+                            {% for turn_stat in turn_stats[turn] %}
+                                <span class="mm-pin" style="color:{{ turn_stat }};">&#11044;</span>
+                            {% endfor %}
                         {% endif %}
                     </td>
                 </form>
@@ -49,13 +55,24 @@
         {% endfor %}
         {% if game.winner != None or cheat_mode %}
             <tr>
-                <td>X</td>
+                <td>Code</td>
                 {% for pin in code_pins %}
-                    <td>{{ pin.color }}</td>
+                    <td>
+                        <span class="mm-pin" style="color:{{ pin.color }};">&#11044;</span>
+                    </td>
                 {% endfor %}
+                <td></td>
                 <td></td>
             </tr>
         {% endif %}
     </table>
 
+{% endblock %}
+
+{% block js %}
+    <script>
+        function colorChanged(select) {
+            select.style.color = select.options[select.selectedIndex].dataset.color;
+        }
+    </script>
 {% endblock %}
