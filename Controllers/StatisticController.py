@@ -15,6 +15,6 @@ class StatisticController:
         top_five_wins = Game.query.filter_by(winner=True).group_by(Game.player_id).limit(5).all()
         top_five_fastest_wins = db.session.query(Game, func.count(Game.player_id)).join(Game.pins).group_by(Game.player_id).all()
 
-        return render_template('game/statistics.html', number_of_games_won=number_of_games_won,
+        return render_template('statistics/index.html', number_of_games_won=number_of_games_won,
                                top_five_wins=top_five_wins,
                                top_five_fastest_wins=top_five_fastest_wins)
