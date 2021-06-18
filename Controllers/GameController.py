@@ -12,9 +12,6 @@ class GameController:
     def __init__(self, db):
         self.db = db
 
-    def index_action(self):
-        return render_template('game/index.html')
-
     def new_action(self):
         if request.method == 'GET':
             return render_template('game/new.html')
@@ -109,9 +106,6 @@ class GameController:
                 db.session.commit()
 
             return redirect(url_for('play', game_id=game.id))
-
-    def statistics_action(self):
-        return
 
     def get_pins(self, id, colors):
         if id != '':

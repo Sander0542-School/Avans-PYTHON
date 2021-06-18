@@ -3,10 +3,20 @@
 {% block content %}
     <div class="card">
         <div class="card-body">
+            <p class="card-text">Aantal gewonnen games: {{ number_of_games_won }}</p>
+            <p class="card-text">Top 5 spelers met de meeste wins</p>
+            <ul>
+                {% for win in top_five_wins %}
+                    <li>{{ win.player.username }}</li>
+                {% endfor %}
+            </ul>
 
-            {% for game in games %}
-                <h1>{{ game.id }}</h1>
-            {% endfor %}
+            <p class="card-text">Top 5 spelers met de meeste wins</p>
+            <ul>
+                {% for win in top_five_fastest_wins %}
+                    <li>{{ win }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}
