@@ -1,5 +1,7 @@
 from flask import Flask
 from Controllers.GameController import *
+from Controllers.HomeController import *
+from Controllers.StatisticController import *
 from database import db, DatabaseInit
 
 app = Flask(__name__)
@@ -14,12 +16,13 @@ database_init = DatabaseInit(db)
 
 # Controllers
 game_controller = GameController(db)
-
+home_controller = HomeController(db)
+statistic_controller = StatisticController(db)
 
 # Routes
 @app.route('/')
 def index():
-    return game_controller.index_action()
+    return home_controller.index_action()
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -34,7 +37,7 @@ def play():
 
 @app.route('/statistics')
 def statistics():
-    return game_controller.statistics_action()
+    return statistic_controller.index_action()
 
 
 # Database

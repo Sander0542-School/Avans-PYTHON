@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}Statistics{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+
+            {% for game in games %}
+                <h1>{{ game.id }}</h1>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
